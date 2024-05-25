@@ -5,13 +5,23 @@ import Home from "./pages/Home";
 
 function App() {
   const [exerciseType, setExerciseType] = useState("");
+  const [selectedPart, setSelectedPart] = useState("");
 
   return (
     <Router>
       <div className="min-h-screen bg-gray-100">
-        <Header setExerciseType={setExerciseType} />
+        <Header
+          setExerciseType={setExerciseType}
+          setSelectedPart={setSelectedPart}
+          selectedPart={selectedPart}
+        />
         <Routes>
-          <Route path="/" element={<Home exerciseType={exerciseType} />} />
+          <Route
+            path="/"
+            element={
+              <Home exerciseType={exerciseType} selectedPart={selectedPart} />
+            }
+          />
         </Routes>
       </div>
     </Router>
