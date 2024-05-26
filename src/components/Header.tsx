@@ -19,16 +19,23 @@ const Header = ({ setExerciseType, setSelectedPart, selectedPart }) => {
       "test",
     ],
     背: [
+      "滑輪下拉",
+      "Pull Up Machine",
       "B3 寬握正手划船",
       "B5 寬握反手划船",
       "B6 分離划船",
-      "滑輪下拉",
+      "B14 分離滑輪下拉",
       "H37 Hammer Row",
       "TRX 划船",
       "H10 反手划船",
       "H8 正手划船",
     ],
-    肩: ["彈力帶旋轉肌群熱身", "S4 側飛鳥", "S2 肩推"],
+    上肢: [
+      "彈力帶旋轉肌群熱身",
+      "S4 側飛鳥",
+      "S2 肩推",
+      "A5 Bicep Curl 二頭肌彎舉",
+    ],
     下肢: [
       "Squat",
       "臀推機",
@@ -39,6 +46,7 @@ const Header = ({ setExerciseType, setSelectedPart, selectedPart }) => {
       "L14髖外展",
       "H18 Hammer Leg",
       "H19",
+      "L10",
     ],
   };
 
