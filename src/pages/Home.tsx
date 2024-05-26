@@ -23,7 +23,7 @@ const Home = ({ exerciseType, selectedPart }) => {
       }
     } else {
       setExerciseData([]);
-      setInputs([]);
+      setInputs([{ weight: "", reps: "" }]);
     }
   }, [exerciseType, selectedPart]);
 
