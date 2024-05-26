@@ -85,7 +85,8 @@ const Home = ({ exerciseType, selectedPart }) => {
             <div className="flex items-center">
               <p className="mr-2">次數</p>
               <input
-                type="text"
+                type="number"
+                pattern="[0-9]*"
                 placeholder="次數"
                 value={input.reps}
                 onChange={(e) =>
