@@ -15,6 +15,7 @@ const Header = ({ setExerciseType, setSelectedPart, selectedPart }) => {
       "H1 上胸 Hammer upper chest",
       "H3 下胸",
       "H4 上胸",
+      "test",
     ],
     背: [
       "B3 寬握正手划船",
