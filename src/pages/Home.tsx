@@ -1,20 +1,29 @@
 import { useState, useEffect } from "react";
 import { getToday } from "../utils/time";
 
+// 從 excel 匯入紀錄
+// import t from "./test.json";
+
+// for (const [key, value] of Object.entries(t)) {
+//   localStorage.setItem(key, JSON.stringify(value));
+// }
+
 const Home = ({ exerciseType, selectedPart }) => {
+  const storageType = `${selectedPart}_${exerciseType}`;
   const [inputs, setInputs] = useState([{ weight: "", reps: "" }]);
   const [exerciseData, setExerciseData] = useState([]);
 
   useEffect(() => {
     if (exerciseType && selectedPart) {
       // 從 localStorage 加載運動數據
-      const data =
-        JSON.parse(localStorage.getItem(`${exerciseType}_${selectedPart}`)) ||
-        [];
+      const data = JSON.parse(localStorage.getItem(storageType)) || [];
       setExerciseData(data);
       if (data.length > 0) {
         setInputs(data[0].sets);
       }
+    } else {
+      setExerciseData([]);
+      setInputs([]);
     }
   }, [exerciseType, selectedPart]);
 
@@ -51,10 +60,7 @@ const Home = ({ exerciseType, selectedPart }) => {
       ...exerciseData,
     ];
 
-    localStorage.setItem(
-      `${exerciseType}_${selectedPart}`,
-      JSON.stringify(newData)
-    );
+    localStorage.setItem(storageType, JSON.stringify(newData));
     setExerciseData(newData);
   };
 
@@ -118,7 +124,7 @@ const Home = ({ exerciseType, selectedPart }) => {
       <div className="mt-8">
         <p className="text-3xl mb-2">歷史紀錄</p>
         <ul>
-          {exerciseData.map(({ date, part, type, sets }) => {
+          {exerciseData.map(({ date, sets }) => {
             const weight = [];
             const reps = [];
 
