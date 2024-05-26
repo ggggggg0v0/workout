@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CSVReader from "./CsvReader";
 
 const Header = ({ setExerciseType, setSelectedPart, selectedPart }) => {
   const [exerciseOptions, setExerciseOptions] = useState([]);
@@ -56,6 +57,7 @@ const Header = ({ setExerciseType, setSelectedPart, selectedPart }) => {
 
   return (
     <div className="p-4 bg-gray-200 flex flex-col">
+      <CSVReader />
       <select
         onChange={handlePartChange}
         value={selectedPart}
