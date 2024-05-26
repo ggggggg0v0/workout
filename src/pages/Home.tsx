@@ -73,7 +73,8 @@ const Home = ({ exerciseType, selectedPart }) => {
             <div className="flex items-center">
               <p className="mr-2">重量</p>
               <input
-                type="text"
+                type="number"
+                pattern="[0-9]*"
                 placeholder="重量"
                 value={input.weight}
                 onChange={(e) =>
