@@ -10,6 +10,15 @@ export const getToday = (day) => {
   return `${year}/${month}/${day}`;
 };
 
+export const getTime = (day) => {
+  var currentDate = day ? new Date(day) : new Date();
+
+  const hour = currentDate.getHours();
+  const minute = currentDate.getMinutes();
+
+  return `${hour}:${minute}`;
+};
+
 export const getCurrentMinute = () => {
   // 創建一個新的 Date 物件，表示當前時間
   const currentDate = new Date();

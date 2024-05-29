@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getToday } from "../utils/time";
+import { getToday } from "@/utils/time";
 
 // 從 excel 匯入紀錄
 // import t from "./test.json";
