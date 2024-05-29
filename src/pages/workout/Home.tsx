@@ -14,6 +14,7 @@ const Home = ({ exerciseType, selectedPart }) => {
   const [exerciseData, setExerciseData] = useState([]);
   const [taskTime, setTaskTime] = useState([]);
   const [time, setTime] = useState(0);
+  const [timer, setTimer] = useState(null);
 
   useEffect(() => {
     if (exerciseType && selectedPart) {
@@ -31,13 +32,17 @@ const Home = ({ exerciseType, selectedPart }) => {
   }, [exerciseType, selectedPart]);
 
   useEffect(() => {
-    if (time > 0) {
+    if (timer && time > 0) {
       const timer = setTimeout(() => {
         setTime(time - 1);
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [time]);
+
+    if (timer && time === 0) {
+      console.log("123");
+    }
+  }, [time, timer]);
 
   const handleInputChange = (index, field, value) => {
     const newInputs = inputs.map((input, i) =>
@@ -136,7 +141,8 @@ const Home = ({ exerciseType, selectedPart }) => {
                     const newTaskTime = [...taskTime];
                     newTaskTime[index] = true;
                     setTaskTime(newTaskTime);
-                    setTime(90);
+                    setTimer(true);
+                    setTime(5);
                   }}
                   className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                 />
