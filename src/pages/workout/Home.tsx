@@ -8,6 +8,30 @@ import { getToday } from "@/utils/time";
 //   localStorage.setItem(key, JSON.stringify(value));
 // }
 
+function Modal({ onConfirm, onClose }) {
+  return (
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded shadow-lg">
+        <h2 className="text-lg mb-4">是否覆蓋今日資料</h2>
+        <div className="flex justify-end">
+          <button
+            className="px-4 py-2 bg-gray-300 rounded mr-2"
+            onClick={onClose}
+          >
+            取消
+          </button>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+            onClick={onConfirm}
+          >
+            確認
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const Home = ({ exerciseType, selectedPart }) => {
   const storageType = `${selectedPart}_${exerciseType}`;
   const [inputs, setInputs] = useState([{ weight: "", reps: "" }]);
@@ -15,6 +39,12 @@ const Home = ({ exerciseType, selectedPart }) => {
   const [taskTime, setTaskTime] = useState([]);
   const [time, setTime] = useState(0);
   const [timer, setTimer] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [promiseHandlers, setPromiseHandlers] = useState({
+    resolve: null,
+    reject: null,
+  });
 
   useEffect(() => {
     if (exerciseType && selectedPart) {
@@ -61,10 +91,25 @@ const Home = ({ exerciseType, selectedPart }) => {
 
   const handleSubmit = () => {
     const newDate = getToday();
-    // 將輸入的資料存入 localStorage
-
+    // 若本日已新增紀錄則彈窗警告
     if (exerciseData[0]?.date === newDate) {
-      return;
+      setIsModalOpen(true);
+      return new Promise((resolve, reject) => {
+        setPromiseHandlers({ resolve, reject });
+      })
+        .then(() => {
+          exerciseData[0] = {
+            date: newDate,
+            part: selectedPart,
+            type: exerciseType,
+            sets: inputs,
+          };
+          localStorage.setItem(storageType, JSON.stringify(newData));
+          setExerciseData(newData);
+        })
+        .catch(() => {
+          // console.log("Action cancelled");
+        });
     }
 
     const newData = [
@@ -79,6 +124,22 @@ const Home = ({ exerciseType, selectedPart }) => {
 
     localStorage.setItem(storageType, JSON.stringify(newData));
     setExerciseData(newData);
+  };
+
+  const handleConfirm = () => {
+    if (promiseHandlers.resolve) {
+      promiseHandlers.resolve();
+      setPromiseHandlers({ resolve: null, reject: null });
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleClose = () => {
+    if (promiseHandlers.reject) {
+      promiseHandlers.reject();
+      setPromiseHandlers({ resolve: null, reject: null });
+    }
+    setIsModalOpen(false);
   };
 
   return (
@@ -211,6 +272,7 @@ const Home = ({ exerciseType, selectedPart }) => {
           })}
         </ul>
       </div>
+      {isModalOpen && <Modal onConfirm={handleConfirm} onClose={handleClose} />}
     </div>
   );
 };
