@@ -100,7 +100,7 @@ const Home = ({ exerciseType, selectedPart }) => {
                 <p className="mr-2">重量</p>
                 <input
                   type="number"
-                  pattern="[0-9]*"
+                  inputMode="decimal"
                   placeholder="重量"
                   value={input.weight}
                   onChange={(e) =>
@@ -113,7 +113,7 @@ const Home = ({ exerciseType, selectedPart }) => {
                 <p className="mr-2">次數</p>
                 <input
                   type="number"
-                  pattern="[0-9]*"
+                  inputMode="decimal"
                   placeholder="次數"
                   value={input.reps}
                   onChange={(e) =>
