@@ -20,7 +20,6 @@ function App() {
 
   //控制modal開關
   function switchModal() {
-    console.log(123);
     setIsModalOpen(!isModalOpen);
   }
 

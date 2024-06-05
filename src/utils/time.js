@@ -70,3 +70,20 @@ export const timeFormat = (time) => {
 
   return `${hour}:${minute}`;
 };
+
+export function getWeekDates(date) {
+  const inputDate = new Date(date);
+  const day = inputDate.getDay(); // 取得星期幾（0:星期日，1:星期一，依此類推）
+
+  const weekStart = new Date(inputDate);
+  weekStart.setDate(inputDate.getDate() - day + (day === 0 ? -6 : 1)); // 設置為當週的星期一
+
+  const weekDates = [];
+  for (let i = 0; i < 7; i++) {
+    const weekDay = new Date(weekStart);
+    weekDay.setDate(weekStart.getDate() + i);
+    weekDates.push(getToday(weekDay));
+  }
+
+  return weekDates;
+}

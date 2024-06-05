@@ -1,7 +1,14 @@
 import { useState } from "react";
+import TodaySummary from "./TodaySummary";
 import CSVReader from "./CsvReader";
+import CSVExpoter from "./CsvExporter";
 
-const Header = ({ setExerciseType, setSelectedPart, selectedPart }) => {
+const Header = ({
+  setExerciseType,
+  setSelectedPart,
+  selectedPart,
+  exerciseType,
+}) => {
   const [exerciseOptions, setExerciseOptions] = useState([]);
 
   const exercises = {
@@ -52,22 +59,29 @@ const Header = ({ setExerciseType, setSelectedPart, selectedPart }) => {
 
   const parts = Object.keys(exercises);
 
-  const handlePartChange = (e) => {
-    const part = e.target.value;
+  const handlePartChange = (part) => {
     setSelectedPart(part); // 更新選擇的運動部位
     setExerciseOptions(exercises[part] || []);
     setExerciseType("");
   };
 
-  const handleExerciseChange = (e) => {
-    setExerciseType(e.target.value);
+  const handleExerciseChange = (tp) => {
+    setExerciseType(tp);
   };
 
   return (
     <div className="p-4 bg-gray-200 flex flex-col">
-      <CSVReader />
+      <div className="flex justify-between">
+        <CSVReader />
+        <CSVExpoter />
+      </div>
+      <TodaySummary
+        setExerciseType={handleExerciseChange}
+        setSelectedPart={handlePartChange}
+      />
+
       <select
-        onChange={handlePartChange}
+        onChange={(e) => handlePartChange(e.target.value)}
         value={selectedPart}
         className="p-4 border rounded"
       >
@@ -79,8 +93,12 @@ const Header = ({ setExerciseType, setSelectedPart, selectedPart }) => {
         ))}
       </select>
       <br />
-      <select onChange={handleExerciseChange} className="p-4 border rounded">
-        <option value="">選擇運動類型</option>
+      <select
+        onChange={(e) => handleExerciseChange(e.target.value)}
+        value={exerciseType}
+        className="p-4 border rounded"
+      >
+        <option>選擇運動類型</option>
         {exerciseOptions.map((exercise) => (
           <option key={exercise} value={exercise}>
             {exercise}

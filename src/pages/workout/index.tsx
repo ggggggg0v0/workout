@@ -13,6 +13,7 @@ function App() {
         setExerciseType={setExerciseType}
         setSelectedPart={setSelectedPart}
         selectedPart={selectedPart}
+        exerciseType={exerciseType}
       />
       <Home exerciseType={exerciseType} selectedPart={selectedPart} />
     </div>

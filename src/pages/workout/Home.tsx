@@ -33,7 +33,6 @@ function Modal({ onConfirm, onClose }) {
 }
 
 const Home = ({ exerciseType, selectedPart }) => {
-  const storageType = `${selectedPart}_${exerciseType}`;
   const [inputs, setInputs] = useState([{ weight: "", reps: "" }]);
   const [exerciseData, setExerciseData] = useState([]);
   const [taskTime, setTaskTime] = useState([]);
@@ -49,7 +48,11 @@ const Home = ({ exerciseType, selectedPart }) => {
   useEffect(() => {
     if (exerciseType && selectedPart) {
       // 從 localStorage 加載運動數據
-      const data = JSON.parse(localStorage.getItem(storageType)) || [];
+      let data = JSON.parse(localStorage.getItem("record")) || [];
+      data = data.filter((v) => {
+        return v.part === selectedPart && v.type === exerciseType;
+      });
+
       setExerciseData(data);
       if (data.length > 0) {
         setInputs(data[0].sets);
@@ -70,7 +73,6 @@ const Home = ({ exerciseType, selectedPart }) => {
     }
 
     if (timer && time === 0) {
-      console.log("123");
     }
   }, [time, timer]);
 
@@ -91,6 +93,7 @@ const Home = ({ exerciseType, selectedPart }) => {
 
   const handleSubmit = () => {
     const newDate = getToday();
+    const todayRecord = JSON.parse(localStorage.getItem("record")) || [];
     // 若本日已新增紀錄則彈窗警告
     if (exerciseData[0]?.date === newDate) {
       setIsModalOpen(true);
@@ -98,18 +101,20 @@ const Home = ({ exerciseType, selectedPart }) => {
         setPromiseHandlers({ resolve, reject });
       })
         .then(() => {
-          exerciseData[0] = {
+          todayRecord[0] = {
             date: newDate,
             part: selectedPart,
             type: exerciseType,
             sets: inputs,
           };
-          localStorage.setItem(storageType, JSON.stringify(newData));
-          setExerciseData(newData);
+          localStorage.setItem("record", JSON.stringify(todayRecord));
+          setExerciseData(
+            todayRecord.filter((v) => {
+              return v.part === selectedPart && v.type === exerciseType;
+            })
+          );
         })
-        .catch(() => {
-          // console.log("Action cancelled");
-        });
+        .catch(() => {});
     }
 
     const newData = [
@@ -119,11 +124,15 @@ const Home = ({ exerciseType, selectedPart }) => {
         type: exerciseType,
         sets: inputs,
       },
-      ...exerciseData,
+      ...todayRecord,
     ];
 
-    localStorage.setItem(storageType, JSON.stringify(newData));
-    setExerciseData(newData);
+    localStorage.setItem("record", JSON.stringify(newData));
+    setExerciseData(
+      newData.filter((v) => {
+        return v.part === selectedPart && v.type === exerciseType;
+      })
+    );
   };
 
   const handleConfirm = () => {
