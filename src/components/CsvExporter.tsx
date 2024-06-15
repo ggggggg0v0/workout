@@ -69,7 +69,7 @@ function CSVExporter() {
 
     localStorage.setItem("record", JSON.stringify(newRecord));
 
-    // downloadCsv(data.join("\n"), "s");
+    downloadCsv(data.join("\n"), "s");
   };
 
   return (
