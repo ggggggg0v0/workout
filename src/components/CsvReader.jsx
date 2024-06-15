@@ -10,7 +10,7 @@ function CSVReader() {
       const contentJSON = Object.entries(JSON.parse(content.toString()));
       const ns = window.location.pathname;
       const key = `${ns}_record`;
-      const byPart = JSON.parse(localStorage.getItem(key));
+      const byPart = JSON.parse(localStorage.getItem(key) || "{}");
 
       for (const [key, value] of contentJSON) {
         const [part, type] = key.split("_");
