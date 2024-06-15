@@ -48,7 +48,9 @@ const Home = ({ exerciseType, selectedPart }) => {
   useEffect(() => {
     if (exerciseType && selectedPart) {
       // 從 localStorage 加載運動數據
-      let data = JSON.parse(localStorage.getItem("record")) || [];
+      const ns = window.location.pathname;
+      const key = `${ns}_record`;
+      let data = JSON.parse(localStorage.getItem(key)) || [];
       data = data.filter((v) => {
         return v.part === selectedPart && v.type === exerciseType;
       });
@@ -93,7 +95,9 @@ const Home = ({ exerciseType, selectedPart }) => {
 
   const handleSubmit = () => {
     const newDate = getToday();
-    const todayRecord = JSON.parse(localStorage.getItem("record")) || [];
+    const ns = window.location.pathname;
+    const key = `${ns}_record`;
+    const todayRecord = JSON.parse(localStorage.getItem(key)) || [];
     // 若本日已新增紀錄則彈窗警告
     if (exerciseData[0]?.date === newDate) {
       setIsModalOpen(true);
@@ -107,7 +111,7 @@ const Home = ({ exerciseType, selectedPart }) => {
             type: exerciseType,
             sets: inputs,
           };
-          localStorage.setItem("record", JSON.stringify(todayRecord));
+          localStorage.setItem(key, JSON.stringify(todayRecord));
           setExerciseData(
             todayRecord.filter((v) => {
               return v.part === selectedPart && v.type === exerciseType;
@@ -127,7 +131,7 @@ const Home = ({ exerciseType, selectedPart }) => {
       ...todayRecord,
     ];
 
-    localStorage.setItem("record", JSON.stringify(newData));
+    localStorage.setItem(key, JSON.stringify(newData));
     setExerciseData(
       newData.filter((v) => {
         return v.part === selectedPart && v.type === exerciseType;

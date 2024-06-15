@@ -1,16 +1,34 @@
 function CSVReader() {
   // 处理上传的CSV文件
   const handleFileUpload = (event) => {
+    localStorage.clear();
     const file = event.target.files[0];
     const reader = new FileReader();
 
     reader.onload = (e) => {
       const content = e.target.result;
       const contentJSON = Object.entries(JSON.parse(content.toString()));
+      const ns = window.location.pathname;
+      const key = `${ns}_record`;
+      const byPart = JSON.parse(localStorage.getItem(key));
 
       for (const [key, value] of contentJSON) {
-        localStorage.setItem(key, JSON.stringify(value));
+        const [part, type] = key.split("_");
+        // const newV = { ...value, part, type };
+        value.forEach((v) => {
+          byPart.push({ ...v, part, type });
+        });
+        // console.log(value);
+        // localStorage.setItem(key, JSON.stringify(value));
       }
+      console.log(
+        "byPart",
+        byPart.sort(function (a, b) {
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return new Date(b.date) - new Date(a.date);
+        })
+      );
     };
 
     reader.readAsText(file);
