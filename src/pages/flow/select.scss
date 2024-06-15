@@ -1,0 +1,13 @@
+.remove {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  right: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  color: rgb(109, 109, 109);
+
+  &:hover {
+    color: rgb(156, 156, 156);
+  }
+}
