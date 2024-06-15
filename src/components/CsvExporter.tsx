@@ -1,3 +1,4 @@
+import { getToday } from "@/pages/flow/utils/time";
 function downloadCsv(csv, name) {
   // Create a blob with the CSV data
   const blob = new Blob([csv], { type: "text/csv" });
@@ -21,55 +22,82 @@ function downloadCsv(csv, name) {
   document.body.removeChild(link);
 }
 
+function downloadJSON(data, name) {
+  // Create a blob with the CSV data
+  const blob = new Blob([data], { type: "text" });
+
+  // Create a link element
+  const link = document.createElement("a");
+
+  // Set the download attribute with a filename
+  link.download = `${name}.json`;
+
+  // Create a URL for the blob and set it as the href attribute
+  link.href = window.URL.createObjectURL(blob);
+
+  // Append the link to the body
+  document.body.appendChild(link);
+
+  // Programmatically click the link to trigger the download
+  link.click();
+
+  // Remove the link from the document
+  document.body.removeChild(link);
+}
+
 function CSVExporter() {
   const handleClick = () => {
-    localStorage.removeItem("record");
+    // const allKeys = Object.keys(localStorage);
+    // const newRecord = [];
 
-    const allKeys = Object.keys(localStorage);
-    const newRecord = [];
+    // const header = [
+    //   "date",
+    //   "part",
+    //   "type",
+    //   "sets1",
+    //   "weight1",
+    //   "sets2",
+    //   "weight2",
+    //   "sets3",
+    //   "weight3",
+    //   "sets4",
+    //   "weight4",
+    //   "sets5",
+    //   "weight5",
+    //   "note",
+    // ];
+    // const data = [header.join(",")];
 
-    const header = [
-      "date",
-      "part",
-      "type",
-      "sets1",
-      "weight1",
-      "sets2",
-      "weight2",
-      "sets3",
-      "weight3",
-      "sets4",
-      "weight4",
-      "sets5",
-      "weight5",
-      "note",
-    ];
-    const data = [header.join(",")];
+    // allKeys.forEach((key) => {
+    //   const byPart = JSON.parse(localStorage.getItem(key));
+    //   const [p, t] = key.split("_");
 
-    allKeys.forEach((key) => {
-      const byPart = JSON.parse(localStorage.getItem(key));
-      const [p, t] = key.split("_");
+    //   byPart.forEach(({ date, sets, note }) => {
+    //     const r = [];
+    //     sets.forEach(({ weight, reps }) => {
+    //       r.push(reps, weight);
+    //     });
 
-      byPart.forEach(({ date, sets, note }) => {
-        const r = [];
-        sets.forEach(({ weight, reps }) => {
-          r.push(reps, weight);
-        });
+    //     newRecord.push({
+    //       date,
+    //       part: p,
+    //       type: t,
+    //       sets,
+    //     });
 
-        newRecord.push({
-          date,
-          part: p,
-          type: t,
-          sets,
-        });
+    //     data.push([date, p, t, ...r, note].join(",") + "\n");
+    //   });
+    // });
 
-        data.push([date, p, t, ...r, note].join(",") + "\n");
-      });
-    });
+    const ns = window.location.pathname;
+    const key = `${ns}_record`;
+    const d = localStorage.getItem(key);
+    const today = getToday();
 
-    localStorage.setItem("record", JSON.stringify(newRecord));
+    downloadJSON(d, `workout_backup_${today}`);
+    // localStorage.setItem("record", JSON.stringify(newRecord));
 
-    downloadCsv(data.join("\n"), "s");
+    // downloadCsv(data.join("\n"), "s");
   };
 
   return (

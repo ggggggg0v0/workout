@@ -7,39 +7,42 @@ function CSVReader() {
 
     reader.onload = (e) => {
       const content = e.target.result;
-      const contentJSON = Object.entries(JSON.parse(content.toString()));
+      console.log("content", content);
+      // const contentJSON = Object.entries(JSON.parse(content.toString()));
       const ns = window.location.pathname;
       const key = `${ns}_record`;
-      const byPart = JSON.parse(localStorage.getItem(key) || "[]");
+      // const byPart = JSON.parse(localStorage.getItem(key) || "[]");
 
-      for (const [key, value] of contentJSON) {
-        const [part, type] = key.split("_");
-        // const newV = { ...value, part, type };
-        value.forEach((v) => {
-          byPart.push({ ...v, part, type });
-        });
-        // console.log(value);
-        // localStorage.setItem(key, JSON.stringify(value));
-      }
-      console.log(
-        "byPart",
-        byPart.sort(function (a, b) {
-          // Turn your strings into dates, and then subtract them
-          // to get a value that is either negative, positive, or zero.
-          return new Date(b.date) - new Date(a.date);
-        })
-      );
+      console.log(JSON.parse(content.toString()));
+      localStorage.setItem(key, content.toString());
+      // for (const [key, value] of contentJSON) {
+      //   const [part, type] = key.split("_");
+      //   // const newV = { ...value, part, type };
+      //   value.forEach((v) => {
+      //     byPart.push({ ...v, part, type });
+      //   });
+      //   // console.log(value);
+      //   // localStorage.setItem(key, JSON.stringify(value));
+      // }
+      // console.log(
+      //   "byPart",
+      //   byPart.sort(function (a, b) {
+      //     // Turn your strings into dates, and then subtract them
+      //     // to get a value that is either negative, positive, or zero.
+      //     return new Date(b.date) - new Date(a.date);
+      //   })
+      // );
 
-      localStorage.setItem(
-        key,
-        JSON.stringify(
-          byPart.sort(function (a, b) {
-            // Turn your strings into dates, and then subtract them
-            // to get a value that is either negative, positive, or zero.
-            return new Date(b.date) - new Date(a.date);
-          })
-        )
-      );
+      // localStorage.setItem(
+      //   key,
+      //   JSON.stringify(
+      //     byPart.sort(function (a, b) {
+      //       // Turn your strings into dates, and then subtract them
+      //       // to get a value that is either negative, positive, or zero.
+      //       return new Date(b.date) - new Date(a.date);
+      //     })
+      //   )
+      // );
     };
 
     reader.readAsText(file);
