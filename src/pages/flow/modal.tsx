@@ -36,7 +36,7 @@ export default function ({ isOpen, handleClose, handleSave, selected }) {
     setInputValue(event.target.value);
   };
 
-  function handleSubmit(formValue: FormValue, actions) {
+  function handleSubmit(_: FormValue, actions) {
     handleSave({ content: inputValue });
     actions.setSubmitting(false);
   }
@@ -62,7 +62,7 @@ export default function ({ isOpen, handleClose, handleSave, selected }) {
               </ModalHeader>
               <ModalBody>
                 <Field name="content">
-                  {({ field, form }) => (
+                  {({ field }) => (
                     <FormControl>
                       <FormLabel>Content</FormLabel>
                       <Textarea
