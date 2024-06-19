@@ -19,29 +19,36 @@ const defaultSetting = {
 class local {
   setRecordList(record) {
     const today = getToday();
-    const recordKey = `${today}_record`;
-    localStorage.setItem(recordKey, JSON.stringify(record));
+    const ns = window.location.pathname;
+    const key = `${ns}_${today}_record`;
+    localStorage.setItem(key, JSON.stringify(record));
   }
 
   getRecordList(date): RecordList {
     const today = date || getToday();
-    const recordKey = `${today}_record`;
-
-    const storedValue = localStorage.getItem(recordKey);
+    const ns = window.location.pathname;
+    const key = `${ns}_${today}_record`;
+    const storedValue = localStorage.getItem(key);
     return storedValue ? JSON.parse(storedValue) : [];
   }
 
   getSetting() {
-    const storedValue = localStorage.getItem("setting");
+    const ns = window.location.pathname;
+    const key = `${ns}_setting`;
+    const storedValue = localStorage.getItem(key);
     return storedValue ? JSON.parse(storedValue) : defaultSetting;
   }
 
   setSetting(newSetting) {
-    localStorage.setItem("setting", JSON.stringify(newSetting));
+    const ns = window.location.pathname;
+    const key = `${ns}_setting`;
+    localStorage.setItem(key, JSON.stringify(newSetting));
   }
 
   resetSetting() {
-    localStorage.setItem("setting", JSON.stringify(defaultSetting));
+    const ns = window.location.pathname;
+    const key = `${ns}_setting`;
+    localStorage.setItem(key, JSON.stringify(defaultSetting));
     return this.getSetting();
   }
 }

@@ -6,7 +6,9 @@ const TodaySummary = ({ setExerciseType, setSelectedPart }) => {
 
   useEffect(() => {
     // 從 localStorage 加載運動數據
-    let data = JSON.parse(localStorage.getItem("record")) || [];
+    const ns = window.location.pathname;
+    const key = `${ns}_record`;
+    let data = JSON.parse(localStorage.getItem(key)) || [];
 
     data = data.filter((v) => {
       return v.date === getToday();
